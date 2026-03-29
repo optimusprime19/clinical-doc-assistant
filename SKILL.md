@@ -1,6 +1,6 @@
 ---
 name: clinical-doc-assistant
-version: "1.0.3"
+version: "1.0.4"
 description: "Use this skill when a clinician, practice manager, or healthcare developer needs to draft, structure, or retrieve clinical documentation — including SOAP notes, referral letters, prior authorization forms, discharge summaries, and care plan narratives. Connects to FHIR R4-compliant APIs (Epic, Cerner, Azure Health Data Services, HAPI FHIR) to pull structured patient data and generate documentation drafts. Also supports manual input when no EHR connection is available. DO NOT use for direct diagnosis, prescribing decisions, or any task requiring a licensed clinical judgment — this skill assists with documentation only."
 tags: ["healthcare", "fhir", "clinical", "ehr", "documentation", "soap", "prior-auth", "referral", "discharge"]
 author: "optimusprime19"
@@ -17,7 +17,7 @@ optionalEnv:
   - FHIR_SANDBOX_MODE    # Set to "true" to use public HAPI sandbox — no credentials needed
   - CLINICAL_DOC_API_URL # Hosted backend URL for credit-based generation (see backend.py)
   - CLINICAL_DOC_API_KEY # API key for the hosted backend
-  - ANTHROPIC_API_KEY    # Required server-side if you self-host backend.py — used by the backend to call the Anthropic API for document generation. Never sent to ClawHub or any third party by this skill.
+  - ANTHROPIC_API_KEY    # Required server-side if you self-host backend.py. When the hosted backend is used, patient_context is forwarded to Anthropic's API to generate documents. Do NOT use with real PHI unless you have a BAA with Anthropic and your backend is deployed in a HIPAA-eligible environment.
 ---
 
 # Clinical Documentation Assistant
@@ -392,6 +392,7 @@ Agent: [Pulls active conditions, labs (HbA1c), current meds]
 
 | Version | Date       | Changes                              |
 |---------|------------|--------------------------------------|
+| 1.0.4   | 2026-03-29 | Fixed misleading ANTHROPIC_API_KEY comment; clarified patient_context is forwarded to Anthropic when backend is used; added CORS production warning. |
 | 1.0.3   | 2026-03-29 | Fixed env var declarations (moved optional vars out of requiredEnv); added ANTHROPIC_API_KEY to optionalEnv with context; added PHI/privacy warning. |
 | 1.0.0   | 2026-03-29 | Initial release. SOAP, referral, prior auth, discharge, AVS. SMART on FHIR auth. Sandbox mode. |
 
